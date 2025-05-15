@@ -40,7 +40,7 @@ body{
 .page{
   min-height:calc(100vh - 64px);
   display:flex;
-  align-items:flex-start;
+  align-items:center; /* vertically center the card */
   justify-content:center;
   padding:48px 16px;
 }
@@ -81,7 +81,8 @@ body{
 
 /* small screens center vertically more */
 @media (max-height:720px){
-  .page{align-items:flex-start;padding-top:36px}
+  /* keep it centered on most screens; allow a bit more top padding on short viewports */
+  .page{align-items:center;padding-top:36px}
 }
 @media (max-width:480px){
   .inner-card{padding:20px}
@@ -94,15 +95,16 @@ body{
 }
 .fake-alert-backdrop.visible{opacity:1;pointer-events:auto}
 .fake-alert{
-  position:fixed;left:50%;top:36%;transform:translate(-50%,-50%) scale(.98);
-  background:#0b0b0b;border:1px solid rgba(255,255,255,0.06);
+  position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.98);
+  /* red, slightly transparent card */
+  background:rgba(120,10,10,0.92);border:1px solid rgba(255,255,255,0.04);
   padding:18px 20px;border-radius:12px;width:380px;max-width:92%;box-shadow:0 20px 40px rgba(0,0,0,0.6);
   color:#fff;opacity:0;pointer-events:none;transition:opacity .18s ease,transform .18s ease;z-index:1300
 }
 .fake-alert.visible{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
 .fake-alert .fake-title{font-weight:700;font-size:16px;margin:0 0 8px;color:#fff}
 .fake-alert .fake-message{color:#bfbfbf;font-size:13px;line-height:1.35;margin:0 0 16px}
-.fake-actions{display:flex;justify-content:flex-end}
+.fake-actions{display:flex;justify-content:center}
 .alert-btn{background:transparent;border:0;color:#3897f0;padding:8px 12px;border-radius:6px;font-weight:700;cursor:pointer}
 .alert-btn:hover{background:rgba(255,255,255,0.02)}
 
